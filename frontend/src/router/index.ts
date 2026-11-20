@@ -9,6 +9,7 @@ const QueryBuilder = () => import('@/views/query_builder/index.vue')
 const Dashboard = () => import('@/views/dashboard/index.vue')
 const Chart = () => import('@/views/chart/index.vue')
 const DataService = () => import('@/views/data_service/index.vue')
+const SegmentTiming = () => import('@/views/segment_timing/index.vue')
 const Alert = () => import('@/views/alert/index.vue')
 const UserGroup = () => import('@/views/user_group/index.vue')
 const Snapshot = () => import('@/views/snapshot/index.vue')
@@ -32,6 +33,7 @@ const router = createRouter({
     { path: '/dashboard', name: 'dashboard', component: Dashboard },
     { path: '/chart', name: 'chart', component: Chart },
     { path: '/data_service', name: 'data_service', component: DataService },
+    { path: '/segment_timing', name: 'segment_timing', component: SegmentTiming },
     { path: '/alert', name: 'alert', component: Alert },
     { path: '/user_group', name: 'user_group', component: UserGroup },
     { path: '/snapshot', name: 'snapshot', component: Snapshot },

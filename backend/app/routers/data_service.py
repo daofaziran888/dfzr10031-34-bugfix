@@ -6,7 +6,9 @@ from typing import Any
 from fastapi import APIRouter, HTTPException, Query, Request
 
 from app.schemas import ActionResult, EntryPayload, PageResult
+from app.segment_seed import ANALYSIS_DATE
 from app.services.data_service import DataServiceService
+from app.services.segment_timing import service as segment_timing_service
 
 router = APIRouter(prefix="/api/data_service", tags=["数据API发布"])
 
@@ -14,6 +16,13 @@ service = DataServiceService()
 
 LIST_FIELDS = ["服务编号", "服务名称", "输出数据集", "查询参数", "响应字段", "缓存秒数", "分页上限", "服务状态"]
 STATUSES = ["草稿", "已配置", "已发布", "已停用"]
+
+
+@router.get("/timing_dataset")
+def get_timing_dataset(date: str | None = Query(default=None)) -> dict[str, Any]:
+    """路段运输时长发布数据集：只含达标路段的分位数与可比区间，缺抵达样本一律排除。"""
+    target_date = date or ANALYSIS_DATE
+    return segment_timing_service.publish_dataset(target_date)
 
 
 @router.get("/export")

@@ -6,7 +6,9 @@ from typing import Any
 from fastapi import APIRouter, HTTPException, Query, Request
 
 from app.schemas import ActionResult, EntryPayload, PageResult
+from app.segment_seed import ANALYSIS_DATE
 from app.services.chart import ChartService
+from app.services.segment_timing import service as segment_timing_service
 
 router = APIRouter(prefix="/api/chart", tags=["图表配置"])
 
@@ -14,6 +16,13 @@ service = ChartService()
 
 LIST_FIELDS = ["图表编号", "图表名称", "图表类型", "数据来源", "坐标字段", "聚合方式", "颜色方案", "图表状态"]
 STATUSES = ["草稿", "已配置", "已发布", "已停用"]
+
+
+@router.get("/timing_coverage")
+def get_timing_coverage(date: str | None = Query(default=None)) -> dict[str, Any]:
+    """图表配置消费的路段计时覆盖结果：分位数、可比区间与空态原因一站式返回。"""
+    target_date = date or ANALYSIS_DATE
+    return segment_timing_service.chart_coverage(target_date)
 
 
 @router.get("/export")

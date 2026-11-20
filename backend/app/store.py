@@ -7,6 +7,7 @@ from __future__ import annotations
 from typing import Any
 
 from app.seed import SEED_ROWS
+from app.segment_seed import DURATION_REPORT_SEED, SEGMENT_EVENT_SEED, SEGMENT_SEED
 
 
 class Store:
@@ -14,6 +15,11 @@ class Store:
         self._tables: dict[str, list[dict[str, Any]]] = {
             name: [dict(row) for row in rows] for name, rows in SEED_ROWS.items()
         }
+        # 路段取数域：路段（含运营时段）、上下车事件、行驶时长上报；计时快照由服务层按需生成。
+        self._tables["segment"] = [dict(row) for row in SEGMENT_SEED]
+        self._tables["segment_event"] = [dict(row) for row in SEGMENT_EVENT_SEED]
+        self._tables["duration_report"] = [dict(row) for row in DURATION_REPORT_SEED]
+        self._tables["timing_run"] = []
 
     def module_names(self) -> list[str]:
         return sorted(self._tables)
